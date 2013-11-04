@@ -7,7 +7,7 @@ if [[ -z $1 ]]; then
 fi
 
 BRIDGE=br1
-VERSION=1.2.10
+VERSION=2.0.2
 
 # We want to start the client containers from cass254, with decreasing IDs
 id=254
@@ -44,6 +44,6 @@ cid=$(sudo docker run -i -d -dns 127.0.0.1 -h $hostname -t cassandra:$VERSION /u
 
 # Add network interface
 sleep 0.5
-sudo pipework $BRIDGE $cid $ip/24
+sudo ./pipework/pipework $BRIDGE $cid $ip/24
 
 sudo docker attach $cid

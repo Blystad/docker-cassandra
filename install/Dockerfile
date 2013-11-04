@@ -2,11 +2,13 @@ FROM ubuntu:precise
 MAINTAINER Nicolas Favre-Felix <n.favrefelix@gmail.com>
 
 # Install dependencies
-RUN apt-get install -y wget openjdk-6-jre dnsmasq-base
+RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" >> /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install -y wget openjdk-7-jre-headless dnsmasq-base
 
 # Install Cassandra
 ADD bin/install-cassandra /usr/bin/install-cassandra
-RUN install-cassandra 1.2.10
+RUN install-cassandra 2.0.2
 
 # Install start scripts and hosts file
 ADD bin/pipework /usr/bin/

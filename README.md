@@ -3,7 +3,7 @@ Docker setup for Apache Cassandra
 
 This repository contains a set of scripts and configuration files to run a Cassandra cluster
 from [Docker](https://www.docker.io/) containers. The current version of this repository is
-configured to create a Cassandra 1.2.10 image and cluster.
+configured to create a Cassandra 2.0.2 image and cluster.
 
 Cassandra nodes are created with their own IP address and configured hostname:
 
@@ -27,32 +27,24 @@ Note that the nodes might take about 30 seconds to show up as they join the Cass
 Getting started
 ---------------
 
-### 1. Check out this repository
+### 1. Check out this repository **with submodules**
 
-    $ git clone https://github.com/nicolasff/docker-cassandra.git
+    $ git clone --recursive https://github.com/Blystad/docker-cassandra.git
     $ cd docker-cassandra
 
-### 2. Install pipework
+### 2. Create a Docker image for Cassandra
 
-Make sure that the bundled script `pipework` is in your path. You can install it with:
+To create a Cassandra 2.0.2 image and tag it, run:
 
-    $ sudo cp install/bin/pipework /usr/bin/
-
-The latest version is on GitHub at https://github.com/jpetazzo/pipework.
-
-### 3. Create a Docker image for Cassandra
-
-To create a Cassandra 1.2.10 image and tag it, run:
-
-    $ sudo docker build -t cassandra:1.2.10 install/
+    $ sudo docker build -t cassandra:2.0.2 install/
 
 You should then see it appear in your list of Docker images:
 
     $ sudo docker images
     REPOSITORY          TAG                 ID                  CREATED              SIZE
-    cassandra           1.2.10              b9ba84a33bb5        About a minute ago   12.29 kB (virtual 404.7 MB)
+    cassandra           2.0.2              b9ba84a33bb5        About a minute ago   12.29 kB (virtual 404.7 MB)
 
-### 4. Start a cluster
+### 3. Start a cluster
 
 Run `./start-cluster.sh 3` to create a cluster of 3 nodes. They are given an IP address and name each, from `cass1` (`192.168.100.1`) to `cass3` (`192.168.100.3`).
 
@@ -60,11 +52,11 @@ Run `sudo docker ps` to list your Cassandra nodes:
 
     $ sudo docker ps
     ID                  IMAGE               COMMAND                CREATED             STATUS              PORTS
-    99d67692f535        cassandra:1.2.10    /usr/bin/start-cassa   10 minutes ago      Up 10 minutes       49332->9160         
-    fe7e2b13cb9e        cassandra:1.2.10    /usr/bin/start-cassa   10 minutes ago      Up 10 minutes       49331->9160         
-    f21da380b00c        cassandra:1.2.10    /usr/bin/start-cassa   10 minutes ago      Up 10 minutes       49330->9160  
+    99d67692f535        cassandra:2.0.2    /usr/bin/start-cassa   10 minutes ago      Up 10 minutes       49332->9160         
+    fe7e2b13cb9e        cassandra:2.0.2    /usr/bin/start-cassa   10 minutes ago      Up 10 minutes       49331->9160         
+    f21da380b00c        cassandra:2.0.2    /usr/bin/start-cassa   10 minutes ago      Up 10 minutes       49330->9160  
 
-### 5. Connect to your cluster
+### 4. Connect to your cluster
 
 Cassandra nodes expose port 9160 for Thrift. Use `sudo docker port <container-id> 9160` or `sudo docker ps` to find the local port it is mapped to.
 
@@ -73,7 +65,7 @@ with IP `192.168.100.254`, the next one `cass253`, etc. Names are reused when cl
 
 `client.sh` runs any command that is passed to it, e.g. `nodetool`, `cassandra-cli`, `cqlsh`... You can also open a shell with `./client.sh bash`.
 
-### 6. Terminate your cluster
+### 5. Terminate your cluster
 
 	$ ./stop-cluster.sh 
     Killing and removing containers 99d67692f535 fe7e2b13cb9e f21da380b00c
